@@ -1,0 +1,130 @@
+.block:nth-child(1),
+.block:nth-child(10),
+.block:nth-child(19),
+.block:nth-child(28),
+.block:nth-child(37),
+.block:nth-child(46),
+.block:nth-child(55),
+.block:nth-child(64),
+.block:nth-child(73)
+{
+    -webkit-transition: -webkit-transform 1s ease 0s;
+    transition: transform 1s ease 0s;
+}
+
+.block:nth-child(2),
+.block:nth-child(11),
+.block:nth-child(20),
+.block:nth-child(29),
+.block:nth-child(38),
+.block:nth-child(47),
+.block:nth-child(56),
+.block:nth-child(65),
+.block:nth-child(74)
+{
+    -webkit-transition: -webkit-transform 1s ease .05s;
+    transition: transform 1s ease .05s;
+}
+
+.block:nth-child(3),
+.block:nth-child(12),
+.block:nth-child(21),
+.block:nth-child(30),
+.block:nth-child(39),
+.block:nth-child(48),
+.block:nth-child(57),
+.block:nth-child(66),
+.block:nth-child(75)
+{
+    -webkit-transition: -webkit-transform 1s ease .1s;
+    transition: transform 1s ease .1s;
+}
+
+.block:nth-child(4),
+.block:nth-child(13),
+.block:nth-child(22),
+.block:nth-child(31),
+.block:nth-child(40),
+.block:nth-child(49),
+.block:nth-child(58),
+.block:nth-child(67),
+.block:nth-child(76)
+{
+    -webkit-transition: -webkit-transform 1s ease .15s;
+    transition: transform 1s ease .15s;
+}
+
+.block:nth-child(5),
+.block:nth-child(14),
+.block:nth-child(23),
+.block:nth-child(32),
+.block:nth-child(41),
+.block:nth-child(50),
+.block:nth-child(59),
+.block:nth-child(68),
+.block:nth-child(77)
+{
+    -webkit-transition: -webkit-transform 1s ease .2s;
+    transition: transform 1s ease .2s;
+}
+
+.block:nth-child(6),
+.block:nth-child(15),
+.block:nth-child(24),
+.block:nth-child(33),
+.block:nth-child(42),
+.block:nth-child(51),
+.block:nth-child(60),
+.block:nth-child(69),
+.block:nth-child(78)
+{
+    -webkit-transition: -webkit-transform 1s ease .25s;
+    transition: transform 1s ease .25s;
+}
+
+.block:nth-child(7),
+.block:nth-child(16),
+.block:nth-child(25),
+.block:nth-child(34),
+.block:nth-child(43),
+.block:nth-child(52),
+.block:nth-child(61),
+.block:nth-child(70),
+.block:nth-child(79)
+{
+    -webkit-transition: -webkit-transform 1s ease .3s;
+    transition: transform 1s ease .3s;
+}
+
+.block:nth-child(8),
+.block:nth-child(17),
+.block:nth-child(26),
+.block:nth-child(35),
+.block:nth-child(44),
+.block:nth-child(53),
+.block:nth-child(62),
+.block:nth-child(71),
+.block:nth-child(80)
+{
+    -webkit-transition: -webkit-transform 1s ease .35s;
+    transition: transform 1s ease .35s;
+}
+
+.block:nth-child(9),
+.block:nth-child(18),
+.block:nth-child(27),
+.block:nth-child(36),
+.block:nth-child(45),
+.block:nth-child(54),
+.block:nth-child(63),
+.block:nth-child(72),
+.block:nth-child(81)
+{
+    -webkit-transition: -webkit-transform 1s ease .4s;
+    transition: transform 1s ease .4s;
+}
+
+.app-ready .block {
+    -webkit-transform: perspective(1300px);
+    transform: perspective(1300px);
+}
