@@ -3,14 +3,7 @@ body {
     font-size: 14px;
     line-height: 14px;
     font-family: Arial, "Helvetica Neue", Helvetica sans-serif;
-    /*background-image: -o-radial-gradient(center, ellipse closest-side, #9de0ff, rgba(255,255,255,0));
-    background-image: -ms-radial-gradient(center, ellipse closest-side, #9de0ff, rgba(255,255,255,0));
-    background-image: -moz-radial-gradient(center, ellipse closest-side, #9de0ff, rgba(255,255,255,0));
-    background-image: -webkit-radial-gradient(center, ellipse closest-side, #9de0ff, rgba(255,255,255,0));
-    background-image: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#9de0ff), color-stop(100%,rgba(255,255,255,0)));
-    background-image: radial-gradient(ellipse at center closest-side, #9de0ff, rgba(255,255,255,0));
-    background-repeat: no-repeat;*/
-
+    /*background: #a3adb4;*/
 }
 h1 {
     margin: 10px 0;
@@ -24,7 +17,7 @@ p {
     margin: 1% auto 0;
 }
 .container {
-    /*background: #eee;*/
+    /*background: #80929f;*/
     position: relative;
     margin: 1% auto 0;
     padding: 1% 0 0;
@@ -136,7 +129,7 @@ p {
     width: 80%;
     height: 80%;
     border-radius: 50%;
-    box-shadow: 0 2px 2px rgba(0,0,0,.2);
+    box-shadow: 0 2px 3px rgba(0,0,0,.2), 0 1px 5px rgba(0,0,0,.1) inset;
 }
 .cell.selected .ball {
     -webkit-animation: shiver 1s infinite;

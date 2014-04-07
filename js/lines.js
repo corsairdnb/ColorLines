@@ -50,6 +50,17 @@ var Lines = function(settings) {
         return params.size * params.size;
     }());
 
+    params.map = (function(){
+        var ar = [];
+        for (var i=0; i<params.size; i++) {
+            ar[i] = [];
+            for (var j=0; j<params.size; j++) {
+                ar[i][j] = -2;
+            }
+        }
+        return ar;
+    }());
+
     // get random integer
     app.getRandomInt = function(min, max) {
         return Math.floor(Math.random() * (max-min+1)) + min;
@@ -114,9 +125,7 @@ var Lines = function(settings) {
                 .addClass(params.cellClass)
                 .attr("data-cell",i)
                 .on("click",function(){
-                    if (!$(this).hasClass(params.cellSelectedClass)) {
-                        app.moveBallTo(this);
-                    }
+                    app.moveBallTo(this);
                 })
                 .appendTo($(params.container));
         }
@@ -132,7 +141,25 @@ var Lines = function(settings) {
                     app.selectBall(this);
                 });
             $("<div/>").addClass(params.ballClass+" "+params.ballClass+"-"+ballsData[i]['color']).appendTo(cell);
+            var coordinates = app.getCoordinates(ballsData[i]['number']);
+            params.map[coordinates[1]][coordinates[0]] = -1;
         }
+    };
+
+    // get array coordinates by number of ball
+    app.getCoordinates = function(n) {
+        return [
+            (function(){
+                if (n % params.size!=0) return parseInt((n / params.size).toString().charAt(2))-1;
+                else return params.size-1;
+            }()), // x
+            params.size - Math.ceil(n/params.size-1) - 1 // y
+        ];
+    };
+
+    // get number
+    app.getCellNumber = function(coords) {
+
     };
 
     // select ball on click
@@ -145,9 +172,101 @@ var Lines = function(settings) {
             $(cell).removeClass(params.cellSelectedClass);
     };
 
-    // try to move ball to passed cell
-    app.moveBallTo = function(cell) {
+    // try to move ball to target cell
+    app.moveBallTo = function(target) {
+        var selectedCell = document.querySelectorAll("."+params.cellClass+"."+params.cellSelectedClass);
+        if ($(target).hasClass(params.cellSelectedClass) || selectedCell.length==0){
+            return false; // return if no need to work
+        }
 
+        var testMap = params.map,
+            targetCellNumber = $(target).attr("data-cell"),
+            selectedCellNumber = $(selectedCell).attr("data-cell"),
+            targetCoordinates = app.getCoordinates(parseInt(targetCellNumber)),
+            selectedCoordinates = app.getCoordinates(parseInt(selectedCellNumber));
+
+        testMap = testMap.reverse();
+        //console.log(JSON.stringify(testMap));
+        //console.log(selectedCoordinates[0], selectedCoordinates[1], targetCoordinates[0], targetCoordinates[1]);
+
+        var trace = app.pathFind(selectedCoordinates[0], selectedCoordinates[1], targetCoordinates[0], targetCoordinates[1], testMap);
+        if (trace) {
+            app.pathTrace(trace);
+        }
+
+    };
+
+    // trace path
+    app.pathTrace = function(trace) {
+        var coords = [], numbers = [];
+        for (var i in trace[0]) {
+            coords.push([trace[0][i],trace[1][i]]);
+        }
+        /*for (var j in coords) {
+            numbers.push(app.getCellNumber(coords[j]));
+        }*/
+        //console.log(coords);
+    };
+
+
+    // find path and get coordinates for tracing
+    app.pathFind = function(ax, ay, bx, by, map) {
+        var width = params.size,
+            height = params.size,
+            wall = -1,
+            blank = -2,
+            px = [],
+            py = [],
+            length = 0,
+            dx = [1,0,-1,0],
+            dy = [0,1,0,-1],
+            d, x, y, k,
+            searchComplete = false;
+
+        // распространение волны
+        d = 0;
+        map[ay][ax] = 0; // start
+        do {
+            searchComplete = true;
+            for (y = 0; y < height; y++) {
+                for (x = 0; x < width; x++) {
+                    if (map[y][x] == d) {                      // ячейка (x, y) помечена числом d
+                        for ( k = 0; k < 4; ++k ) {                   // проходим по всем непомеченным соседям
+                            if ( [y + dy[k]] in map && [x + dx[k]] in map[y + dy[k]] && map[y + dy[k]][x + dx[k]] == blank ) {
+                                searchComplete = false;                            // найдены непомеченные клетки
+                                map[y + dy[k]][x + dx[k]] = d + 1;      // распространяем волну
+                            }
+                        }
+                    }
+                }
+            }
+            d++;
+        }
+        while (!searchComplete && map[by][bx] == blank);
+
+        if (map[by][bx] == blank) return false;  // путь не найден
+
+        // восстановление пути
+        length = map[by][bx];            // длина кратчайшего пути из (ax, ay) в (bx, by)
+        x = bx;
+        y = by;
+        d = length;
+        while (d > 0) {
+            px[d] = x;
+            py[d] = y;                   // записываем ячейку (x, y) в путь
+            d--;
+            for (k = 0; k < 4; k++) {
+                if ([y + dy[k]] in map && [x + dx[k]] in map[y + dy[k]] && map[y + dy[k]][x + dx[k]] == d) {
+                    x = x + dx[k];
+                    y = y + dy[k];           // переходим в ячейку, которая на 1 ближе к старту
+                    break;
+                }
+            }
+        }
+        px[0] = ax;
+        py[0] = ay;                    // теперь px[0..len] и py[0..len] - координаты ячеек пути
+        console.log(px,py);
+        return [px,py];
     };
 
     // append random balls to grid
@@ -159,7 +278,6 @@ var Lines = function(settings) {
                 .addClass(params.ballClass+"-queue "+params.ballClass+"-"+ballsData[i]['color'])
                 .appendTo($(params.queue));
         }
-        console.log(ballsData);
         app.save("next", ballsData);
     };
 
@@ -204,25 +322,6 @@ var Lines = function(settings) {
     });
 
     return app;
-};
-
-window.onload = function() {
-
-    // For creating the game instance you need to set some initial params.
-    // Otherwise default params will be used.
-    window.App = new Lines({
-        container: document.querySelector(".container"), // where to create instance of the game
-        score: document.querySelector(".score"), // where to print player's score
-        queue: document.querySelector(".queue-div"), // where to display next balls
-        newGame: document.querySelector(".new-game"), // button for restart game
-        size: 9, // size of game field
-        cellClass: "cell", // class for grid cells
-        ballClass: "ball" // class for balls
-    });
-
-    // start game!
-    App.start();
-
 };
 
 // object extension helper
