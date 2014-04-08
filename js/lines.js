@@ -191,6 +191,7 @@ var Lines = function(settings) {
 
         var trace = app.pathFind(selectedCoordinates[0], selectedCoordinates[1], targetCoordinates[0], targetCoordinates[1], testMap);
         if (trace) {
+            console.log(trace);
             app.pathTrace(trace);
         }
 
@@ -198,75 +199,70 @@ var Lines = function(settings) {
 
     // trace path
     app.pathTrace = function(trace) {
-        var coords = [], numbers = [];
-        for (var i in trace[0]) {
-            coords.push([trace[0][i],trace[1][i]]);
-        }
-        /*for (var j in coords) {
-            numbers.push(app.getCellNumber(coords[j]));
-        }*/
-        //console.log(coords);
-    };
 
+    };
 
     // find path and get coordinates for tracing
     app.pathFind = function(ax, ay, bx, by, map) {
-        var width = params.size,
-            height = params.size,
+        var size = params.size,
             wall = -1,
             blank = -2,
-            px = [],
-            py = [],
-            length = 0,
-            dx = [1,0,-1,0],
-            dy = [0,1,0,-1],
-            d, x, y, k,
-            searchComplete = false;
+            wave = 0,
+            x, y, d,
+            dx = [0, 0, -1, 1],
+            dy = [-1, 1, 0, 0],
+            //blackList = [],
+            path = [],
+            pathLength,
+            searchComplete;
 
-        // распространение волны
-        d = 0;
-        map[ay][ax] = 0; // start
+        map[ay][ax] = 0; // start point
         do {
             searchComplete = true;
-            for (y = 0; y < height; y++) {
-                for (x = 0; x < width; x++) {
-                    if (map[y][x] == d) {                      // ячейка (x, y) помечена числом d
-                        for ( k = 0; k < 4; ++k ) {                   // проходим по всем непомеченным соседям
-                            if ( [y + dy[k]] in map && [x + dx[k]] in map[y + dy[k]] && map[y + dy[k]][x + dx[k]] == blank ) {
-                                searchComplete = false;                            // найдены непомеченные клетки
-                                map[y + dy[k]][x + dx[k]] = d + 1;      // распространяем волну
+            for (y=0; y<size; y++) {
+                for (x=0; x<size; x++) {
+                    if (map[y][x]==wave/* && map[y][x]!=wall*/) {
+                        // check neighbours
+                        for (d=0; d<4; d++) {
+                            // if cell exists & is not wall & not in blacklist
+
+                            if (y+dy[d] in map && x+dx[d] in map[y+dy[d]] && map[y+dy[d]][x+dx[d]] == blank) {
+                                // there was at least one not checked cell
+                                // that cell will generate next wave
+                                searchComplete = false;
+                                map[y+dy[d]][x+dx[d]] = wave++;
                             }
                         }
                     }
                 }
             }
-            d++;
+            wave++;
+            if (by == y+dy[d] && bx ==x+dx[d]) searchComplete = true;
         }
-        while (!searchComplete && map[by][bx] == blank);
+        // there are not checked cells, final cell is not reached and program has not fell in endless recursion :)
+        while (!searchComplete && map[by][bx]==blank);
 
-        if (map[by][bx] == blank) return false;  // путь не найден
+        // if final cell has not been reached - there is no way
+        if (map[by][bx] == blank) return false;
 
-        // восстановление пути
-        length = map[by][bx];            // длина кратчайшего пути из (ax, ay) в (bx, by)
+        pathLength = map[by][bx];
         x = bx;
         y = by;
-        d = length;
-        while (d > 0) {
-            px[d] = x;
-            py[d] = y;                   // записываем ячейку (x, y) в путь
-            d--;
-            for (k = 0; k < 4; k++) {
-                if ([y + dy[k]] in map && [x + dx[k]] in map[y + dy[k]] && map[y + dy[k]][x + dx[k]] == d) {
-                    x = x + dx[k];
-                    y = y + dy[k];           // переходим в ячейку, которая на 1 ближе к старту
+        // go back to start point and get coordinates for tracing
+        while (pathLength > 0) {
+            path.push([x, y]);
+            pathLength--;
+            for (d=0; d<4; d++) {
+                // if this cell is closer to start
+                if (y+dy[d] in map && x+dx[d] in map[y+dy[d]] && map[y+dy[d]][x+dx[d]] == pathLength) {
+                    x = x+dx[d];
+                    y = y+dy[d];
                     break;
                 }
             }
         }
-        px[0] = ax;
-        py[0] = ay;                    // теперь px[0..len] и py[0..len] - координаты ячеек пути
-        console.log(px,py);
-        return [px,py];
+        path.push([ax,ay]); // last point is start
+        return path.reverse();
     };
 
     // append random balls to grid
