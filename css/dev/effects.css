@@ -8,8 +8,8 @@
 .cell:nth-child(64),
 .cell:nth-child(73)
 {
-    -webkit-transition: -webkit-transform 1s ease 0s;
-    transition: transform 1s ease 0s;
+    -webkit-transition: all 1s ease 0s;
+    transition: all 1s ease 0s;
 }
 
 .cell:nth-child(2),
@@ -22,8 +22,8 @@
 .cell:nth-child(65),
 .cell:nth-child(74)
 {
-    -webkit-transition: -webkit-transform 1s ease .05s;
-    transition: transform 1s ease .05s;
+    -webkit-transition: all 1s ease .05s;
+    transition: all 1s ease .05s;
 }
 
 .cell:nth-child(3),
@@ -36,8 +36,8 @@
 .cell:nth-child(66),
 .cell:nth-child(75)
 {
-    -webkit-transition: -webkit-transform 1s ease .1s;
-    transition: transform 1s ease .1s;
+    -webkit-transition: all 1s ease .1s;
+    transition: all 1s ease .1s;
 }
 
 .cell:nth-child(4),
@@ -50,8 +50,8 @@
 .cell:nth-child(67),
 .cell:nth-child(76)
 {
-    -webkit-transition: -webkit-transform 1s ease .15s;
-    transition: transform 1s ease .15s;
+    -webkit-transition: all 1s ease .15s;
+    transition: all 1s ease .15s;
 }
 
 .cell:nth-child(5),
@@ -64,8 +64,8 @@
 .cell:nth-child(68),
 .cell:nth-child(77)
 {
-    -webkit-transition: -webkit-transform 1s ease .2s;
-    transition: transform 1s ease .2s;
+    -webkit-transition: all 1s ease .2s;
+    transition: all 1s ease .2s;
 }
 
 .cell:nth-child(6),
@@ -78,8 +78,8 @@
 .cell:nth-child(69),
 .cell:nth-child(78)
 {
-    -webkit-transition: -webkit-transform 1s ease .25s;
-    transition: transform 1s ease .25s;
+    -webkit-transition: all 1s ease .25s;
+    transition: all 1s ease .25s;
 }
 
 .cell:nth-child(7),
@@ -92,8 +92,8 @@
 .cell:nth-child(70),
 .cell:nth-child(79)
 {
-    -webkit-transition: -webkit-transform 1s ease .3s;
-    transition: transform 1s ease .3s;
+    -webkit-transition: all 1s ease .3s;
+    transition: all 1s ease .3s;
 }
 
 .cell:nth-child(8),
@@ -106,8 +106,8 @@
 .cell:nth-child(71),
 .cell:nth-child(80)
 {
-    -webkit-transition: -webkit-transform 1s ease .35s;
-    transition: transform 1s ease .35s;
+    -webkit-transition: all 1s ease .35s;
+    transition: all 1s ease .35s;
 }
 
 .cell:nth-child(9),
@@ -120,11 +120,15 @@
 .cell:nth-child(72),
 .cell:nth-child(81)
 {
-    -webkit-transition: -webkit-transform 1s ease .4s;
-    transition: transform 1s ease .4s;
+    -webkit-transition: all 1s ease .4s;
+    transition: all 1s ease .4s;
 }
 
 .app-ready .cell {
     -webkit-transform: perspective(1300px);
     transform: perspective(1300px);
+}
+.app-ready .cell.closed {
+    -webkit-transform: perspective(1300px) rotateY(-90deg);
+    transform: perspective(1300px) rotateY(-90deg);
 }

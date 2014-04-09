@@ -41,8 +41,11 @@ p {
 .cell:hover {
     background: #ccc;
 }
+.cell.traced {
+    background: #999;
+}
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
     .wrapper {
         width: 400px;
     }
@@ -209,7 +212,7 @@ p {
     background-repeat: no-repeat;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     body, .score-div, .ball-queue {
         font-size: 10px;
         line-height: 11px;
