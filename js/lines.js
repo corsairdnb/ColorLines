@@ -1,6 +1,3 @@
-// jquery is used due to IE sucks
-// (dataset, classList, addEventListener)
-
 var Lines = function(settings) {
     var app = this,
         defaultSettings = {
@@ -40,9 +37,6 @@ var Lines = function(settings) {
             colorNames: ["red","orange","yellow","green","aqua","blue","purple"]
         },
         params = extend(defaultSettings, settings),
-        state = {
-            moving: false // true if ball is moving
-        },
         html = $("html");
 
     // total number of cells
@@ -50,6 +44,7 @@ var Lines = function(settings) {
         return params.size * params.size;
     }());
 
+    // array map of game field
     params.map = (function(){
         var ar = [];
         for (var i=0; i<params.size; i++) {
@@ -113,6 +108,7 @@ var Lines = function(settings) {
         }
     };
 
+    // load map from localStorage
     app.loadFromMap = function() {
         var map = app.load("map");
         if (isEmpty(map)) map = false;
@@ -164,18 +160,14 @@ var Lines = function(settings) {
     app.spawnBalls = function() {
         var balls = app.load("next") || app.getRandomBalls();
         for (var i in balls) {
-            var cell = $("[data-cell='"+i+"']")
-                .html("")
-                .on("click",function(){
-
-                    app.selectCell(this);
-                });
+            var cell = $("[data-cell='"+i+"']").html("");
             app.saveMap(i,balls[i]);
-            $("<div/>").addClass(params.ballClass+" "+params.ballClass+"-"+balls[i]).attr("data-color",balls[i]).appendTo(cell);
+            $("<div/>")
+                .addClass(params.ballClass+" "+params.ballClass+"-"+balls[i]).attr("data-color",balls[i])
+                .appendTo(cell);
             var coordinates = app.getCoordinates(cell);
             params.map[coordinates[1]][coordinates[0]] = -1;
         }
-        //console.log(JSON.stringify(params.map));
         return false;
     };
 
@@ -218,26 +210,23 @@ var Lines = function(settings) {
                 }
                 return ar;
             }()),
-            //targetCellNumber = $target.attr("data-cell"),
-            //selectedCellNumber = $(selectedCell).attr("data-cell"),
             targetCoordinates = app.getCoordinates(target),
             selectedCoordinates = app.getCoordinates(selectedCell),
             trace;
 
         testMap = testMap.reverse();
         //console.log(JSON.stringify(testMap));
-        //console.log(selectedCoordinates[0], selectedCoordinates[1], targetCoordinates[0], targetCoordinates[1]);
 
         trace = app.pathFind(selectedCoordinates[0], selectedCoordinates[1], targetCoordinates[0], targetCoordinates[1], testMap);
         if (trace) {
             app.pathTrace(trace);
+            var ball = $(selectedCell).children().fadeOut(function(){$(this).appendTo($target).fadeIn()});
         }
         return false;
     };
 
     // trace path
     app.pathTrace = function(trace) {
-        //console.log(trace);
         var coord, cell, n=0;
         for (var i in trace) {
             coord = trace[i];
@@ -256,7 +245,6 @@ var Lines = function(settings) {
     // find path and get coordinates for tracing
     app.pathFind = function(ax, ay, bx, by, map) {
         var size = params.size,
-            wall = -1,
             blank = -2,
             wave = 0,
             x, y, d,
@@ -278,7 +266,6 @@ var Lines = function(settings) {
 
         map[by][bx] = 0; // start searching from final point
         blackList[by][bx] = 0; // start searching from final point
-        //console.log(ax, ay, bx, by);
         do {
             searchComplete = true;
             for (y=size-1; y>=0; y--) {
@@ -294,10 +281,6 @@ var Lines = function(settings) {
                                     searchComplete = false;
                                     map[y+dy[d]][x+dx[d]] = wave + 1;
                                 }
-                                /*else if (map[y+dy[d]][x+dx[d]] == wall) {
-                                    blackList[y+dy[d]][x+dx[d]] = wall;
-                                    $("[data-x='"+eval(y+dy[d])+"'][data-y='"+eval(x+dx[d])+"']").css("background","black");
-                                }*/
                             }
                         }
                     }

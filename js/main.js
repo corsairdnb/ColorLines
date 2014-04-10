@@ -1,6 +1,6 @@
 window.onload = function() {
 
-    // For creating the game instance you need to set some initial params.
+    // Set some initial params for creating the game instance.
     // Otherwise default params will be used.
    Game = new Lines({
         container: document.querySelector(".container"), // where to create instance of the game

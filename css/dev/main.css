@@ -26,8 +26,7 @@ p {
 .cell {
     display: inline-block;
     background: #ddd;
-    /*background: -ms-linear-gradient(top, #ddd, #bbb);
-    background: linear-gradient(to bottom, #ddd, #bbb);*/
+    /*background: linear-gradient(to bottom, #ddd, #bbb);*/
     width: 10%;
     padding: 5% 0;
     margin: 0 0 1% 1%;
@@ -203,7 +202,6 @@ p {
     background: radial-gradient(ellipse at center 40% closest-side, #3366ff, #0033cc);
     background-repeat: no-repeat;
 }
-
 .ball-purple {
     background: #cc00cc;
     background: -moz-radial-gradient(center 40%, ellipse closest-side, #ff33ff, #cc00cc);
@@ -211,7 +209,6 @@ p {
     background: radial-gradient(ellipse at center 40% closest-side, #ff33ff, #cc00cc);
     background-repeat: no-repeat;
 }
-
 @media (max-width: 767px) {
     body, .score-div, .ball-queue {
         font-size: 10px;
