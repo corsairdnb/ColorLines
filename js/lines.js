@@ -163,8 +163,10 @@ var Lines = function(settings) {
             var cell = $("[data-cell='"+i+"']").html("");
             app.saveMap(i,balls[i]);
             $("<div/>")
+                .hide()
                 .addClass(params.ballClass+" "+params.ballClass+"-"+balls[i]).attr("data-color",balls[i])
-                .appendTo(cell);
+                .appendTo(cell)
+                .fadeIn();
             var coordinates = app.getCoordinates(cell);
             params.map[coordinates[1]][coordinates[0]] = -1;
         }
