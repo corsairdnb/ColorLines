@@ -1,4 +1,4 @@
 ColorLines
 =====
 
-My implementation of this pretty logical game
+It's not working, but it's good enough :)
